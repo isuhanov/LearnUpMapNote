@@ -1,0 +1,31 @@
+<div class="md-editor">
+    <div class="tabs-container">
+        <button 
+            class="button tab-button"
+            [class.is-active]="selectedTab === 'md'"
+            (click)="onClickTabBtn('md')">
+            Контент
+        </button>
+  
+        <button 
+            class="button tab-button"
+            [class.is-active]="selectedTab === 'text'"
+            (click)="onClickTabBtn('text')">
+            Результат
+        </button>
+    </div>
+    
+    <textarea 
+            *ngIf="selectedTab === 'md'"
+            class="field-input input" 
+            id="description"
+            [disabled]="isDisabled"
+            [(ngModel)]="mdText">
+    </textarea>
+  
+    <div 
+        *ngIf="selectedTab === 'text'"
+        class="result"
+        [innerHTML]="convertMD(mdText)">
+    </div>
+</div>
