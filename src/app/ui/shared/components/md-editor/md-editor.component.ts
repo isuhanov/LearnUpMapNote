@@ -54,8 +54,11 @@ export class MdEditorComponent implements OnInit, ControlValueAccessor {
     this.isDisabled = isDisabled
   }
 
-  public writeValue(md: string): void {
-    this.mdText = md
-    console.log(this.mdText)
+  public writeValue(markdown: string): void {
+    if (markdown === null) {
+      return
+    }
+
+    this.mdText = markdown
   }
 }
