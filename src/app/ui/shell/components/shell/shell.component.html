@@ -1,6 +1,6 @@
 <header class="shell-header">
   <div class="actions-container">
-    <button class="button is-primary is-small" (click)="onClickAddButton()">Добавить</button>
+    <button *ngIf="isShowAddButton" class="button is-primary is-small" (click)="onClickAddButton()">Добавить</button>
   </div>
 
   <div class="search-container">
@@ -14,27 +14,12 @@
     </button>
   </div>
 
-  <div class="tags-container">
-    <ul class="tags">
-      <li class="tag">
-        <button class="tag-button">Паб</button>
-      </li>
-
-      <li class="tag">
-        <button class="tag-button">Бар</button>
-      </li>
-
-      <li class="tag">
-        <button class="tag-button">Гастропаб</button>
-      </li>
-
-      <li class="tag">
-        <button class="tag-button">Ресторан</button>
-      </li>
-
-      <li class="tag">
-        <button class="tag-button">Тайская кухня</button>
-      </li>
-    </ul>
-  </div>
+  <mn-tags-filter
+    [elements]="tags"
+    [selected]="selectedTags"
+    (selectedChanges)="onChangeSelectedTags($event)"
+    ></mn-tags-filter>
+    
 </header>
+
+<!-- <mn-place-card></mn-place-card> -->
