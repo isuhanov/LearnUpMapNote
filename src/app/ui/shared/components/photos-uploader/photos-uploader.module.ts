@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IconModule } from "../icon/icon.module"
 import { PhotosUploaderComponent } from './photos-uploader.component';
 
+
+
 @NgModule({
   declarations: [
     PhotosUploaderComponent

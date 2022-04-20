@@ -1,9 +1,9 @@
 import { Component, forwardRef, OnInit } from "@angular/core"
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms"
-import { DomSanitizer } from "@angular/platform-browser"
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser"
 import snarkdown from "snarkdown"
 
-type tabNames = 'md' | 'text'
+type EditorTabName = "RAW" | "RESULT"
 
 @Component({
   selector: "mn-md-editor",
@@ -18,36 +18,41 @@ type tabNames = 'md' | 'text'
   ]
 })
 export class MdEditorComponent implements OnInit, ControlValueAccessor {
-  public selectedTab: tabNames = "md"
-  public mdText: string;
-  public isDisabled:boolean = true
+  public selectedTabName: EditorTabName = "RAW"
+  public editorValue: string = ''
+  public isDisabled: boolean = false
 
   constructor(private domSanitizer: DomSanitizer) {
+  }
+
+  public onChange(markdownValue: string): void {
+  }
+
+  public onTouch(): void {
   }
 
   public ngOnInit(): void {
   }
 
-  public onMdEditorChange(md: string): void {
+  public onClickTabButton(tabName: EditorTabName): void {
+    this.selectedTabName = tabName
   }
 
-  public onMdEditorTouch(): void {
+  public onChangeEditorValue(newValue: string): void {
+    this.editorValue = newValue
+    this.onChange(newValue)
   }
 
-  public onClickTabBtn(tabName: tabNames) {
-    this.selectedTab = tabName
-  }
-
-  public convertMD(markdown: string) {
+  public convertMarkdownToHtml(markdown: string): SafeHtml {
     return this.domSanitizer.bypassSecurityTrustHtml(snarkdown(markdown))
   }
 
-  public registerOnChange(fn: any): void {
-    this.onMdEditorChange = fn
+  public registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn
   }
 
-  public registerOnTouched(fn: any): void {
-    this.onMdEditorTouch = fn
+  public registerOnTouched(fn: () => void): void {
+    this.onTouch = fn
   }
 
   public setDisabledState(isDisabled: boolean): void {
@@ -59,6 +64,6 @@ export class MdEditorComponent implements OnInit, ControlValueAccessor {
       return
     }
 
-    this.mdText = markdown
+    this.editorValue = markdown
   }
 }

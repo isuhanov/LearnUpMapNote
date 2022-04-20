@@ -1,9 +1,8 @@
-import { HttpClient } from "@angular/common/http"
 import { Component, OnInit } from "@angular/core"
 import { FormControl, FormGroup, Validators } from "@angular/forms"
-import { firstValueFrom } from "rxjs"
 import { DialogService } from "../../../../dialog.service"
 import { Coordinates } from "../../../../domain/coordinates"
+import { PlaceService } from "../../../shared/api/place.service"
 
 @Component({
   selector: "mn-place-edit",
@@ -13,22 +12,22 @@ import { Coordinates } from "../../../../domain/coordinates"
 export class PlaceEditComponent implements OnInit {
   public form: FormGroup = new FormGroup({
     name: new FormControl(),
-    rating: new FormControl(1, Validators.min(1)),
+    rating: new FormControl(0, Validators.min(1)),
     description: new FormControl(),
     tags: new FormControl([]),
     photos: new FormControl([])
   })
 
   constructor(private dialogService: DialogService,
-    private httpClient: HttpClient) {
-}
+              public placeService: PlaceService) {
+  }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
   public onClickCancelButton(): void {
     this.form.reset()
-    this.dialogService.isShowCreateOrEditDialog = false
+    this.dialogService.close()
   }
 
   public onClickSaveButton(): void {
@@ -43,6 +42,15 @@ export class PlaceEditComponent implements OnInit {
       latitude: latlng.lat,
       longitude: latlng.lng
     }
-    firstValueFrom(this.httpClient.post(`http://localhost:3000/places`, { ...formValue, coordinates: coordinates })).then(console.log)
+
+    this.placeService.create({ ...formValue, coordinates: coordinates })
+        .then(() => {
+          alert("Все хорошо")
+        })
+        .catch((error) => {
+          alert("Все плохо")
+          console.error(error)
+        })
+    this.dialogService.close()
   }
 }
