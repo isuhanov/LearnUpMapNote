@@ -18,7 +18,6 @@ export class PlaceEditComponent implements OnInit {
     photos: new FormControl([])
   })
 
-  
   constructor(private dialogService: DialogService,
               public placeService: PlaceService) {
   }
